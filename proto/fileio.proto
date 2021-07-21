@@ -1,0 +1,191 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/Jille/grpc-filesystem/proto";
+
+service RemoteFileSystemService {
+	rpc Open(OpenRequest) returns (OpenResponse) {
+	}
+
+	rpc KeepAlive(KeepAliveRequest) returns (google.protobuf.Empty) {
+	}
+
+	rpc Read(ReadRequest) returns (ReadResponse) {
+	}
+
+	rpc ReadAt(ReadAtRequest) returns (ReadResponse) {
+	}
+
+	rpc Write(WriteRequest) returns (WriteResponse) {
+	}
+
+	rpc WriteAt(WriteAtRequest) returns (WriteResponse) {
+	}
+
+	rpc Seek(SeekRequest) returns (SeekResponse) {
+	}
+
+	rpc Ftruncate(FtruncateRequest) returns (google.protobuf.Empty) {
+	}
+
+	rpc Truncate(TruncateRequest) returns (google.protobuf.Empty) {
+	}
+
+	rpc Fstat(FstatRequest) returns (StatResponse) {
+	}
+
+	rpc Stat(StatRequest) returns (StatResponse) {
+	}
+
+	rpc Fsync(FsyncRequest) returns (google.protobuf.Empty) {
+	}
+
+	rpc Close(CloseRequest) returns (google.protobuf.Empty) {
+	}
+
+	rpc Rename(RenameRequest) returns (google.protobuf.Empty) {
+	}
+
+	rpc Unlink(UnlinkRequest) returns (google.protobuf.Empty) {
+	}
+
+	rpc Mkdir(MkdirRequest) returns (google.protobuf.Empty) {
+	}
+
+	rpc Rmdir(RmdirRequest) returns (google.protobuf.Empty) {
+	}
+
+	rpc Readdir(ReaddirRequest) returns (ReaddirResponse) {
+	}
+}
+
+message OpenRequest {
+	string path = 1;
+	bool for_reading = 2;
+	bool for_writing = 3;
+	bool append = 4;
+	bool allow_creation = 5;
+	bool exclusive = 6;
+	bool sync = 7;
+	bool truncate = 8;
+	uint32 create_mode = 9;
+}
+
+message OpenResponse {
+	int64 file_descriptor = 1;
+}
+
+message KeepAliveRequest {
+	int64 file_descriptor = 1;
+}
+
+message ReadRequest {
+	int64 file_descriptor = 1;
+	int64 size = 2;
+}
+
+message ReadAtRequest {
+	int64 file_descriptor = 1;
+	int64 offset = 2;
+	int64 size = 3;
+}
+
+message ReadResponse {
+	bytes data = 1;
+	bool eof = 2;
+}
+
+message WriteRequest {
+	int64 file_descriptor = 1;
+	bytes data = 2;
+}
+
+message WriteAtRequest {
+	int64 file_descriptor = 1;
+	int64 offset = 2;
+	bytes data = 3;
+}
+
+message WriteResponse {
+}
+
+message SeekRequest {
+	enum Whence {
+		SEEK_START = 0;
+		SEEK_CURRENT = 1;
+		SEEK_END = 2;
+	}
+	int64 file_descriptor = 1;
+	int64 offset = 2;
+	Whence whence = 3;
+}
+
+message SeekResponse {
+	int64 offset = 1;
+}
+
+message TruncateRequest {
+	string path = 1;
+	int64 size = 2;
+}
+
+message FtruncateRequest {
+	int64 file_descriptor = 1;
+	int64 size = 2;
+}
+
+message FsyncRequest {
+	int64 file_descriptor = 1;
+}
+
+message CloseRequest {
+	int64 file_descriptor = 1;
+}
+
+message RenameRequest {
+	string old_path = 1;
+	string new_path = 2;
+}
+
+message UnlinkRequest {
+	string path = 1;
+}
+
+message MkdirRequest {
+	string path = 1;
+	uint32 mode = 2;
+}
+
+message RmdirRequest {
+	string path = 1;
+}
+
+message ReaddirRequest {
+	string path = 1;
+}
+
+message ReaddirResponse {
+	message DirEntry {
+		string name = 1;
+		bool is_dir = 2;
+	}
+
+	repeated DirEntry entries = 1;
+}
+
+message StatRequest {
+	string path = 1;
+}
+
+message FstatRequest {
+	int64 file_descriptor = 1;
+}
+
+message StatResponse {
+	int64 size = 1;
+	int32 mode = 2;
+	google.protobuf.Timestamp mtime = 3;
+	bool is_dir = 4;
+}
