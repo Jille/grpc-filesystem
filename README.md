@@ -1,5 +1,7 @@
 # gRPC filesystem
 
+[![GoDoc](https://godoc.org/github.com/Jille/grpc-filesystem?status.svg)](https://godoc.org/github.com/Jille/grpc-filesystem)
+
 This library provides a gRPC interface for a remote filesystem.
 
 There is a server library to serve the filesystem with two hooks: a hook to verify the peer's credentials, and a hook to rewrite the virtual path to a local path.
