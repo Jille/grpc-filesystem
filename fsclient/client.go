@@ -404,3 +404,31 @@ func (de dirEnt) Type() fs.FileMode {
 func (de dirEnt) Info() (fs.FileInfo, error) {
 	return de.parent.Stat(path.Join(de.directory, de.p.GetName()))
 }
+
+func (f *FileSystem) Mkdir(name string, mode fs.FileMode) error {
+	if _, err := f.client.Mkdir(f.ctx, &pb.MkdirRequest{
+		Path: name,
+		Mode: uint32(mode),
+	}); err != nil {
+		return translateRemoteError(err, "mkdir", name)
+	}
+	return nil
+}
+
+func (f *FileSystem) Rmdir(name string) error {
+	if _, err := f.client.Rmdir(f.ctx, &pb.RmdirRequest{
+		Path: name,
+	}); err != nil {
+		return translateRemoteError(err, "rmdir", name)
+	}
+	return nil
+}
+
+func (f *FileSystem) Remove(name string) error {
+	if _, err := f.client.Unlink(f.ctx, &pb.UnlinkRequest{
+		Path: name,
+	}); err != nil {
+		return translateRemoteError(err, "remove", name)
+	}
+	return nil
+}
