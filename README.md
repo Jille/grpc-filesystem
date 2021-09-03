@@ -1,5 +1,7 @@
 # gRPC filesystem
 
+**Deprecated**: This library is superseded by https://github.com/Jille/billy-grpc.
+
 [![GoDoc](https://godoc.org/github.com/Jille/grpc-filesystem?status.svg)](https://godoc.org/github.com/Jille/grpc-filesystem)
 
 This library provides a gRPC interface for a remote filesystem.
